@@ -21,12 +21,16 @@ app.get("/api/notes", (req, res) => {
   res.sendFile(__dirname + "/db/db.json");
 });
 
+app.delete("/api/notes/:id", (req, res) => {
+  const id = req.params.id;
+  Notes.deleteAtIndex(__dirname + "/db/db.json", id);
+  res.send("Note deleted!");
+});
+
 app.post("/api/notes", async (req, res) => {
   console.log(req.body);
-  const fsRes = await Notes.readAndAppend(__dirname + "/db/db.json", req.body);
-  console.log(fsRes);
+  Notes.readAndAppend(__dirname + "/db/db.json", req.body);
   res.send("Note Added!");
-  // res.sendString(req.body);
 });
 
 app.listen(port, () => console.log(`Server listening on port ${port}!`));
